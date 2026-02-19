@@ -82,17 +82,27 @@ git push -u origin main
 
 अब आपको build configuration setup करना होगा:
 
+> **🚨 IMPORTANT**: Cloudflare Pages में **Deploy method** को सही select करना बहुत जरूरी है!
+
+### Deploy Method Select करें
+
+सबसे पहले यह check करें कि आप **Cloudflare Pages** use कर रहे हैं, **Cloudflare Workers** नहीं:
+
+1. Dashboard में **Workers & Pages** section में जाएं
+2. **Create application** → **Pages** tab select करें
+3. **Connect to Git** option use करें (NOT "Direct Upload")
+
 ### Build Settings भरें:
 
 | Setting | Value |
 |---------|-------|
 | **Project name** | `cnvmp3` (या कोई भी unique name) |
 | **Production branch** | `main` |
-| **Framework preset** | `Next.js` |
+| **Framework preset** | `Next.js (Static HTML Export)` ⚠️ |
 | **Build command** | `npm run build` |
 | **Build output directory** | `out` |
 
-> **Important**: Framework preset में **Next.js** select करना जरूरी है।
+> **⚠️ CRITICAL**: Framework preset में **"Next.js (Static HTML Export)"** select करें, सिर्फ "Next.js" नहीं। यह बहुत important है!
 
 ### Environment Variables (Optional)
 
@@ -159,6 +169,25 @@ Build complete होने के बाद:
 ---
 
 ## 🐛 Troubleshooting
+
+### ❌ Error: "Missing entry-point to Worker script"
+
+**Full Error Message**:
+```
+✘ [ERROR] Missing entry-point to Worker script or to assets directory
+Executing user deploy command: npx wrangler deploy
+```
+
+**Problem**: Cloudflare ने **Workers** deployment method use किया, जबकि हमें **Pages** चाहिए।
+
+**Solution**:
+1. Cloudflare Dashboard में अपना project खोलें
+2. **Settings** → **Build & deployments** में जाएं
+3. Check करें कि **Framework preset** = `Next.js (Static HTML Export)` है
+4. अगर गलत है तो:
+   - Project को delete करें
+   - फिर से create करें और **Pages** option select करें (Workers नहीं)
+   - Build settings में **Next.js (Static HTML Export)** preset select करें
 
 ### Build Failed?
 

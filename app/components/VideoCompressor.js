@@ -10,7 +10,7 @@ export default function VideoCompressor() {
     const [videoFile, setVideoFile] = useState(null);
     const [compressedUrl, setCompressedUrl] = useState(null);
     const [progress, setProgress] = useState(0);
-    const [message, setMessage] = useState('Load ffmpeg-core to start');
+    const [message, setMessage] = useState('Loading FFmpeg core...');
     const [quality, setQuality] = useState('medium');
     const [resolution, setResolution] = useState('original');
     const ffmpegRef = useRef(null);
@@ -36,10 +36,10 @@ export default function VideoCompressor() {
                 wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
             });
             setLoaded(true);
-            setMessage('FFmpeg loaded. Ready to compress.');
+            setMessage('Ready to compress! Select a video.');
         } catch (error) {
             console.error(error);
-            setMessage('Failed to load FFmpeg. Check console for details.');
+            setMessage('Failed to load FFmpeg. Please refresh.');
         } finally {
             setIsLoading(false);
         }
@@ -47,6 +47,7 @@ export default function VideoCompressor() {
 
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
+        if (!file) return;
         setVideoFile(file);
         setCompressedUrl(null);
         setProgress(0);
@@ -120,69 +121,98 @@ export default function VideoCompressor() {
     }, []);
 
     return (
-        <div className="converter-container glass-panel">
-            <h1 className="title">Video Compressor</h1>
+        <div className="max-w-2xl mx-auto">
+            <div className="glass-panel p-8">
+                {/* Header */}
+                <div className="text-center mb-8">
+                    <div className="w-16 h-16 mx-auto bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-orange-500/30">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-white">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5M15 15l5.25 5.25" />
+                        </svg>
+                    </div>
+                    <h2 className="text-3xl font-bold text-white mb-2">Video Compressor</h2>
+                    <p className="text-gray-300">Reduce file size without losing quality.</p>
+                </div>
 
-            <div className="status-bar">
-                <p>{message}</p>
-            </div>
+                {/* Upload Area */}
+                <div className="mb-8">
+                    <label className={`block w-full border-2 border-dashed rounded-2xl p-8 cursor-pointer transition-all ${videoFile ? 'border-orange-500/50 bg-orange-500/10' : 'border-white/20 hover:border-orange-500/50 hover:bg-white/5'}`}>
+                        <input type="file" onChange={handleFileUpload} accept="video/*" className="hidden" />
+                        {videoFile ? (
+                            <div className="text-center text-orange-400">
+                                <p className="font-medium truncate max-w-xs mx-auto">{videoFile.name}</p>
+                                <p className="text-sm opacity-75 mt-1">{(videoFile.size / (1024 * 1024)).toFixed(2)} MB</p>
+                            </div>
+                        ) : (
+                            <div className="text-center text-gray-400">
+                                <p className="font-medium">Click to upload video</p>
+                            </div>
+                        )}
+                    </label>
+                </div>
 
-            <div className="upload-section">
-                <label className="file-input-label">
-                    <span>{videoFile ? 'Change Video' : 'Select Video'}</span>
-                    <input type="file" onChange={handleFileUpload} accept="video/*" className="file-input" />
-                </label>
-                {videoFile && <span className="file-name">{videoFile.name}</span>}
-            </div>
+                {/* Settings */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">Quality</label>
+                        <select
+                            value={quality}
+                            onChange={(e) => setQuality(e.target.value)}
+                            className="glass-input w-full p-3"
+                        >
+                            <option value="high" className="text-black">High Quality (Larger size)</option>
+                            <option value="medium" className="text-black">Balanced</option>
+                            <option value="low" className="text-black">Max Compression (Low Quality)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-2">Resolution</label>
+                        <select
+                            value={resolution}
+                            onChange={(e) => setResolution(e.target.value)}
+                            className="glass-input w-full p-3"
+                        >
+                            <option value="original" className="text-black">Original</option>
+                            <option value="1080p" className="text-black">1080p Full HD</option>
+                            <option value="720p" className="text-black">720p HD</option>
+                            <option value="480p" className="text-black">480p SD</option>
+                        </select>
+                    </div>
+                </div>
 
-            <div className="settings-section">
-                <div className="setting-group">
-                    <label className="setting-label">Quality:</label>
-                    <select
-                        value={quality}
-                        onChange={(e) => setQuality(e.target.value)}
-                        className="setting-select"
+                {/* Status & Progress */}
+                <div className="mb-8 min-h-[40px]">
+                    {isLoading ? (
+                        <div className="w-full bg-white/10 rounded-full h-4 mb-2 overflow-hidden">
+                            <div className="bg-gradient-to-r from-orange-500 to-red-600 h-4 rounded-full transition-all duration-300" style={{ width: `${progress}%` }}></div>
+                        </div>
+                    ) : null}
+                    <p className="text-sm text-center text-gray-300 animate-pulse">{message}</p>
+                </div>
+
+                {/* Actions */}
+                <div className="space-y-4">
+                    <button
+                        onClick={compressVideo}
+                        disabled={!loaded || !videoFile || isLoading}
+                        className={`w-full py-4 rounded-xl font-bold text-lg transition-all ${!loaded || !videoFile || isLoading
+                                ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                                : 'bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-400 hover:to-red-500 text-white shadow-lg shadow-orange-500/30 hover:-translate-y-0.5 active:scale-95'
+                            }`}
                     >
-                        <option value="high">High (CRF 23)</option>
-                        <option value="medium">Medium (CRF 28)</option>
-                        <option value="low">Low (CRF 35)</option>
-                    </select>
-                </div>
-
-                <div className="setting-group">
-                    <label className="setting-label">Resolution:</label>
-                    <select
-                        value={resolution}
-                        onChange={(e) => setResolution(e.target.value)}
-                        className="setting-select"
-                    >
-                        <option value="original">Original</option>
-                        <option value="1080p">1080p</option>
-                        <option value="720p">720p</option>
-                        <option value="480p">480p</option>
-                    </select>
-                </div>
-            </div>
-
-            {progress > 0 && progress < 100 && (
-                <div className="progress-container">
-                    <div className="progress-bar" style={{ width: `${progress}%` }}></div>
-                    <span className="progress-text">{progress}%</span>
-                </div>
-            )}
-
-            <div className="actions">
-                {loaded && videoFile && !compressedUrl && (
-                    <button onClick={compressVideo} disabled={isLoading} className="btn-primary">
                         {isLoading ? 'Compressing...' : 'Compress Video'}
                     </button>
-                )}
 
-                {compressedUrl && (
-                    <a href={compressedUrl} download="compressed.mp4" className="btn-success">
-                        Download Compressed Video
-                    </a>
-                )}
+                    {compressedUrl && (
+                        <a
+                            href={compressedUrl}
+                            download={`compressed_${videoFile?.name}`}
+                            className="block w-full py-4 rounded-xl font-bold text-lg bg-green-600 hover:bg-green-500 text-white text-center shadow-lg shadow-green-500/20 transition-all hover:-translate-y-0.5"
+                        >
+                            Download Compressed Video
+                        </a>
+                    )}
+                </div>
             </div>
         </div>
     );
