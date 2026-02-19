@@ -130,15 +130,24 @@ export default function MergePdf() {
                 </div>
 
                 {mergedPdfUrl && (
-                    <div className="mt-8 p-4 bg-green-500/10 border border-green-500/30 rounded-xl">
-                        <p className="text-green-400 mb-4">PDFs merged successfully!</p>
+                    <div className="mt-8 p-6 bg-green-500/10 border border-green-500/30 rounded-xl space-y-4">
+                        <p className="text-green-400 font-semibold">PDFs merged successfully!</p>
                         <a
                             href={mergedPdfUrl}
                             download="merged.pdf"
-                            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none transition-all w-full justify-center"
                         >
                             Download Merged PDF
                         </a>
+                        <button
+                            onClick={() => {
+                                setPdfFiles([]);
+                                setMergedPdfUrl(null);
+                            }}
+                            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-lg text-white bg-gray-700 hover:bg-gray-600 focus:outline-none transition-all w-full justify-center"
+                        >
+                            Merge Custom PDFs
+                        </button>
                     </div>
                 )}
             </div>

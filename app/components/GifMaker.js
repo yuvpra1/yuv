@@ -240,23 +240,34 @@ export default function GifMaker() {
                         onClick={createGif}
                         disabled={!loaded || inputFiles.length === 0 || isLoading}
                         className={`w-full py-4 rounded-xl font-bold text-lg transition-all ${!loaded || inputFiles.length === 0 || isLoading
-                                ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                                : 'bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white shadow-lg hover:shadow-pink-500/30 hover:-translate-y-0.5'
+                            ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                            : 'bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white shadow-lg hover:shadow-pink-500/30 hover:-translate-y-0.5'
                             }`}
                     >
                         {isLoading ? 'Creating GIF...' : 'Generate GIF'}
                     </button>
 
                     {gifUrl && (
-                        <div className="flex flex-col items-center p-6 bg-white/5 rounded-2xl border border-white/10">
+                        <div className="flex flex-col items-center p-6 bg-white/5 rounded-2xl border border-white/10 space-y-4 w-full">
                             <img src={gifUrl} alt="GIF Preview" className="max-h-64 rounded-lg shadow-lg mb-4" />
                             <a
                                 href={gifUrl}
                                 download="animation.gif"
-                                className="px-8 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-lg shadow-lg hover:-translate-y-0.5 transition-all"
+                                className="w-full px-8 py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-lg shadow-lg hover:-translate-y-0.5 transition-all text-center"
                             >
                                 Download GIF
                             </a>
+                            <button
+                                onClick={() => {
+                                    setInputFiles([]);
+                                    setGifUrl(null);
+                                    setProgress(0);
+                                    setMessage('Ready! Upload video or images.');
+                                }}
+                                className="w-full px-8 py-3 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded-lg shadow-lg hover:-translate-y-0.5 transition-all"
+                            >
+                                Create Another GIF
+                            </button>
                         </div>
                     )}
                 </div>

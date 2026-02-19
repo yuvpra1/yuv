@@ -24,7 +24,7 @@ export default function MemeGenerator() {
     };
 
     const generateMeme = () => {
-        if (!imagePreview) return;
+        if (!imagePreview || !canvasRef.current) return;
 
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
@@ -58,6 +58,7 @@ export default function MemeGenerator() {
             const dataUrl = canvas.toDataURL('image/png');
             setGeneratedMeme(dataUrl);
         };
+        img.crossOrigin = 'anonymous';
         img.src = imagePreview;
     };
 
@@ -114,7 +115,7 @@ export default function MemeGenerator() {
                                         <input
                                             type="number"
                                             value={fontSize}
-                                            onChange={(e) => setFontSize(parseInt(e.target.value))}
+                                            onChange={(e) => setFontSize(parseInt(e.target.value) || 0)}
                                             className="glass-input w-full p-2"
                                         />
                                     </div>
@@ -142,20 +143,33 @@ export default function MemeGenerator() {
 
                         {/* Preview */}
                         <div className="text-center">
-                            <h4 className="text-sm text-gray-400 mb-2">My Meme</h4>
-                            <div className="relative inline-block rounded-lg overflow-hidden border border-gray-700 shadow-2xl">
-                                <canvas ref={canvasRef} className="hidden" />
-                                <img src={generatedMeme || imagePreview} alt="Meme Preview" className="max-w-full max-h-[500px]" />
-                            </div>
-
                             {generatedMeme && (
-                                <a
-                                    href={generatedMeme}
-                                    download="my-meme.png"
-                                    className="btn-primary w-full mt-6 inline-block"
-                                >
-                                    Download Meme
-                                </a>
+                                <div className="space-y-4 mt-6">
+                                    <h4 className="text-sm text-gray-400 mb-2">My Meme</h4>
+                                    <div className="relative inline-block rounded-lg overflow-hidden border border-gray-700 shadow-2xl">
+                                        <canvas ref={canvasRef} className="hidden" />
+                                        <img src={generatedMeme} alt="Meme Preview" className="max-w-full max-h-[500px]" />
+                                    </div>
+                                    <a
+                                        href={generatedMeme}
+                                        download="my-meme.png"
+                                        className="btn-primary w-full inline-block"
+                                    >
+                                        Download Meme
+                                    </a>
+                                    <button
+                                        onClick={() => {
+                                            setFile(null);
+                                            setImagePreview(null);
+                                            setTopText('');
+                                            setBottomText('');
+                                            setGeneratedMeme(null);
+                                        }}
+                                        className="btn-secondary w-full"
+                                    >
+                                        Create Another Meme
+                                    </button>
+                                </div>
                             )}
                         </div>
                     </div>

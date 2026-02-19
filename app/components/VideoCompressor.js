@@ -196,21 +196,34 @@ export default function VideoCompressor() {
                         onClick={compressVideo}
                         disabled={!loaded || !videoFile || isLoading}
                         className={`w-full py-4 rounded-xl font-bold text-lg transition-all ${!loaded || !videoFile || isLoading
-                                ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                                : 'bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-400 hover:to-red-500 text-white shadow-lg shadow-orange-500/30 hover:-translate-y-0.5 active:scale-95'
+                            ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                            : 'bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-400 hover:to-red-500 text-white shadow-lg shadow-orange-500/30 hover:-translate-y-0.5 active:scale-95'
                             }`}
                     >
                         {isLoading ? 'Compressing...' : 'Compress Video'}
                     </button>
 
                     {compressedUrl && (
-                        <a
-                            href={compressedUrl}
-                            download={`compressed_${videoFile?.name}`}
-                            className="block w-full py-4 rounded-xl font-bold text-lg bg-green-600 hover:bg-green-500 text-white text-center shadow-lg shadow-green-500/20 transition-all hover:-translate-y-0.5"
-                        >
-                            Download Compressed Video
-                        </a>
+                        <div className="space-y-4">
+                            <a
+                                href={compressedUrl}
+                                download={`compressed_${videoFile?.name}`}
+                                className="block w-full py-4 rounded-xl font-bold text-lg bg-green-600 hover:bg-green-500 text-white text-center shadow-lg shadow-green-500/20 transition-all hover:-translate-y-0.5"
+                            >
+                                Download Compressed Video
+                            </a>
+                            <button
+                                onClick={() => {
+                                    setVideoFile(null);
+                                    setCompressedUrl(null);
+                                    setProgress(0);
+                                    setMessage('Ready to compress! Select a video.');
+                                }}
+                                className="block w-full py-4 rounded-xl font-bold text-lg bg-gray-700 hover:bg-gray-600 text-white shadow-lg transition-all hover:-translate-y-0.5"
+                            >
+                                Compress Another Video
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>

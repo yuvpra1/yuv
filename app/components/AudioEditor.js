@@ -259,24 +259,35 @@ export default function AudioEditor() {
                         onClick={processAudio}
                         disabled={!loaded || audioFiles.length === 0 || isLoading}
                         className={`w-full py-4 rounded-xl font-bold text-lg transition-all ${!loaded || audioFiles.length === 0 || isLoading
-                                ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                                : 'bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white shadow-lg hover:shadow-violet-500/30 hover:-translate-y-0.5'
+                            ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                            : 'bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white shadow-lg hover:shadow-violet-500/30 hover:-translate-y-0.5'
                             }`}
                     >
                         {isLoading ? 'Processing...' : 'Process Audio'}
                     </button>
 
                     {outputUrl && (
-                        <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-6 text-center animate-fade-in">
+                        <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-6 text-center animate-fade-in space-y-4">
                             <p className="text-green-400 mb-4 font-semibold">Success! Your audio is ready.</p>
                             <audio controls src={outputUrl} className="w-full mb-4 opacity-80" />
                             <a
                                 href={outputUrl}
                                 download="edited_audio.mp3"
-                                className="inline-block py-2 px-6 rounded-lg font-bold bg-green-600 hover:bg-green-500 text-white shadow-lg transition-all"
+                                className="inline-block w-full py-3 px-6 rounded-lg font-bold bg-green-600 hover:bg-green-500 text-white shadow-lg transition-all"
                             >
                                 Download MP3
                             </a>
+                            <button
+                                onClick={() => {
+                                    setAudioFiles([]);
+                                    setOutputUrl(null);
+                                    setProgress(0);
+                                    setMessage('Ready to edit audio!');
+                                }}
+                                className="inline-block w-full py-3 px-6 rounded-lg font-bold bg-gray-700 hover:bg-gray-600 text-white shadow-lg transition-all"
+                            >
+                                Edit Another File
+                            </button>
                         </div>
                     )}
                 </div>

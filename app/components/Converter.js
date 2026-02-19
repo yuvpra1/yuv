@@ -134,21 +134,34 @@ export default function Converter() {
             onClick={transcode}
             disabled={!loaded || !videoFile || isLoading}
             className={`w-full py-4 rounded-xl font-bold text-lg transition-all ${!loaded || !videoFile || isLoading
-                ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                : 'bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 text-white shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5 active:scale-95'
+              ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+              : 'bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 text-white shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5 active:scale-95'
               }`}
           >
             {isLoading ? 'Processing...' : 'Convert to MP3'}
           </button>
 
           {mp3Url && (
-            <a
-              href={mp3Url}
-              download={`${videoFile?.name.split('.')[0] || 'audio'}.mp3`}
-              className="block w-full py-4 rounded-xl font-bold text-lg bg-green-600 hover:bg-green-500 text-white shadow-lg shadow-green-500/20 transition-all hover:-translate-y-0.5"
-            >
-              Download MP3
-            </a>
+            <div className="space-y-4">
+              <a
+                href={mp3Url}
+                download={`${videoFile?.name.split('.')[0] || 'audio'}.mp3`}
+                className="block w-full py-4 rounded-xl font-bold text-lg bg-green-600 hover:bg-green-500 text-white shadow-lg shadow-green-500/20 transition-all hover:-translate-y-0.5"
+              >
+                Download MP3
+              </a>
+              <button
+                onClick={() => {
+                  setVideoFile(null);
+                  setMp3Url(null);
+                  setProgress(0);
+                  setMessage('Ready to convert! Select a video file.');
+                }}
+                className="block w-full py-4 rounded-xl font-bold text-lg bg-gray-700 hover:bg-gray-600 text-white shadow-lg transition-all hover:-translate-y-0.5"
+              >
+                Convert Another File
+              </button>
+            </div>
           )}
         </div>
       </div>

@@ -90,7 +90,7 @@ export default function ImageResizer() {
                                         <label className="block text-sm text-gray-400 mb-1">Width (px)</label>
                                         <input
                                             type="number"
-                                            value={targetWidth}
+                                            value={targetWidth || ''}
                                             onChange={handleWidthChange}
                                             className="glass-input w-full p-2"
                                         />
@@ -99,7 +99,7 @@ export default function ImageResizer() {
                                         <label className="block text-sm text-gray-400 mb-1">Height (px)</label>
                                         <input
                                             type="number"
-                                            value={targetHeight}
+                                            value={targetHeight || ''}
                                             onChange={handleHeightChange}
                                             className="glass-input w-full p-2"
                                         />
@@ -150,16 +150,25 @@ export default function ImageResizer() {
                             </div>
 
                             {resizedImage && (
-                                <div className="animate-fade-in">
+                                <div className="animate-fade-in space-y-4">
                                     <h4 className="text-sm text-blue-400 mb-2 mt-6">Resized Result ({targetWidth} x {targetHeight})</h4>
                                     <img src={resizedImage} alt="Resized" className="max-h-64 mx-auto rounded-lg border-2 border-blue-500/50" />
                                     <a
                                         href={resizedImage}
                                         download={`resized_${file.name}`}
-                                        className="btn-primary w-full mt-4 inline-block"
+                                        className="btn-primary w-full inline-block"
                                     >
                                         Download Resized Image
                                     </a>
+                                    <button
+                                        onClick={() => {
+                                            setFile(null);
+                                            setResizedImage(null);
+                                        }}
+                                        className="btn-secondary w-full"
+                                    >
+                                        Resize Another Image
+                                    </button>
                                 </div>
                             )}
                         </div>

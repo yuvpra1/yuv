@@ -183,17 +183,31 @@ export default function ImageConverter() {
                 </div>
 
                 {/* Bottom Action */}
-                <div className="mt-8">
+                <div className="mt-8 space-y-4">
                     <button
                         onClick={convertImages}
                         disabled={!loaded || inputImages.length === 0 || isLoading}
                         className={`w-full py-4 rounded-xl font-bold text-lg transition-all ${!loaded || inputImages.length === 0 || isLoading
-                                ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
-                                : 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white shadow-lg hover:shadow-green-500/30 hover:-translate-y-0.5'
+                            ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                            : 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white shadow-lg hover:shadow-green-500/30 hover:-translate-y-0.5'
                             }`}
                     >
                         {isLoading ? 'Converting...' : `Convert ${inputImages.length} Images`}
                     </button>
+
+                    {processedImages.length > 0 && (
+                        <button
+                            onClick={() => {
+                                setInputImages([]);
+                                setProcessedImages([]);
+                                setProgress(0);
+                                setMessage('Ready to convert images.');
+                            }}
+                            className="w-full py-4 rounded-xl font-bold text-lg bg-gray-700 hover:bg-gray-600 text-white shadow-lg transition-all hover:-translate-y-0.5"
+                        >
+                            Convert More Images
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

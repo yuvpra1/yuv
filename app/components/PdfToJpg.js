@@ -24,7 +24,7 @@ export default function PdfToJpg() {
 
         try {
             const pdfjsLib = await import('pdfjs-dist/build/pdf');
-            pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+            pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
             const arrayBuffer = await file.arrayBuffer();
             const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
@@ -116,6 +116,21 @@ export default function PdfToJpg() {
                                 </a>
                             </div>
                         ))}
+                    </div>
+                )}
+
+                {images.length > 0 && (
+                    <div className="mt-8">
+                        <button
+                            onClick={() => {
+                                setFile(null);
+                                setImages([]);
+                                setProgress(0);
+                            }}
+                            className="btn-secondary w-full"
+                        >
+                            Convert Another PDF
+                        </button>
                     </div>
                 )}
             </div>
