@@ -33,6 +33,12 @@ export default function Header() {
                         <Link href="/image-converter" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium dark:text-gray-300 dark:hover:text-white">
                             Image Converter
                         </Link>
+                        <Link href="/merge-pdf" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium dark:text-gray-300 dark:hover:text-white">
+                            Merge PDF
+                        </Link>
+                        <Link href="/image-resizer" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium dark:text-gray-300 dark:hover:text-white">
+                            Resizer
+                        </Link>
                     </div>
                     <div className="-mr-2 flex items-center sm:hidden">
                         <button
@@ -74,6 +80,18 @@ export default function Header() {
                         </Link>
                         <Link href="/image-converter" className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium dark:text-gray-300 dark:hover:bg-gray-700">
                             Image Converter
+                        </Link>
+                        <Link href="/merge-pdf" className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium dark:text-gray-300 dark:hover:bg-gray-700">
+                            Merge PDF
+                        </Link>
+                        <Link href="/pdf-to-jpg" className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium dark:text-gray-300 dark:hover:bg-gray-700">
+                            PDF to JPG
+                        </Link>
+                        <Link href="/image-resizer" className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium dark:text-gray-300 dark:hover:bg-gray-700">
+                            Image Resizer
+                        </Link>
+                        <Link href="/meme-generator" className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium dark:text-gray-300 dark:hover:bg-gray-700">
+                            Meme Generator
                         </Link>
                     </div>
                 </div>
