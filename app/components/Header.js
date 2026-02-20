@@ -13,7 +13,7 @@ export default function Header() {
                     <div className="flex">
                         <div className="flex-shrink-0 flex items-center">
                             <Link href="/" className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-600">
-                                CNVMP3
+                                CNVMP3.APP
                             </Link>
                         </div>
                     </div>
